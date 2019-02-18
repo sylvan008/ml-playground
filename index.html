@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mainframe</title>
+  <link rel="stylesheet" href="./material-kit-pro-html-v2.1.1/assets/css/material-kit.css">
+</head>
+<body>
+<div class="container">
+  <div class="section text-center">
+    <h1>Урок Цифра</h1>
+  </div>
+</div>
+<ul class="nav nav-pills nav-pills-primary justify-content-center" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#exercise-1" role="tablist" aria-expanded="true" >Задача 1</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#exercise-2" role="tablist" aria-expanded="false">Задача 2</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#exercise-3" role="tablist" aria-expanded="false">Задача 3</a>
+  </li>
+</ul>
+
+<div class="tab-content tab-space">
+  <iframe id="exercise-1"
+          class="tab-pane active"
+          aria-expanded="true"
+          src=""
+          frameborder="0"
+          width="100%"
+          allowfullscreen="allowfullscreen">
+  </iframe>
+
+  <iframe id="exercise-2"
+          class="tab-pane"
+          aria-expanded="false"
+          src=""
+          frameborder="0"
+          width="100%"
+          height="100%">
+  </iframe>
+
+  <iframe id="exercise-3"
+          class="tab-pane"
+          aria-expanded="false"
+          src=""
+          frameborder="0"
+          width="100%"
+          height="100%">
+  </iframe>
+</div>
+
+
+<script src="./material-kit-pro-html-v2.1.1/assets/js/core/jquery.min.js"></script>
+<script src="./material-kit-pro-html-v2.1.1/assets/js/core/popper.min.js"></script>
+<script src="./material-kit-pro-html-v2.1.1/assets/js/core/bootstrap-material-design.min.js"></script>
+
+<script type="text/javascript">
+  $(function() {
+    let networkLink = "./frame.html";
+    let hash = {
+      "#exercise-1": "#dataset=circle&exercise=exercise-1",
+      "#exercise-2": "#dataset=xor&exercise=exercise-2",
+      "#exercise-3": "#dataset=parrot&exercise=exercise-3"
+    };
+
+    let links = $(".nav-link");
+    links.on("click", function() {
+      let id = this.href.slice(this.href.indexOf('#'));
+      if (id !== "#exercise-1") setFrame(id);
+    });
+
+    links.on("hide.bs.tab", function(e) {
+      let iFrame = $(e.target.hash);
+      paused(iFrame);
+    });
+
+    $(document).ready(setFrame("#exercise-1"));
+
+    function setFrame(id) {
+      let iframe = $(id, parent.document.body);
+      iframe.attr("src", networkLink + hash[id]);
+      sizeFrame(iframe);
+    }
+
+    function sizeFrame(fr) {
+      fr.one("load", function () {
+        fr.height(fr[ 0 ].contentWindow.document.body.scrollHeight + 4);
+      });
+    }
+
+    function paused(iFrame) {
+      iFrame[0].contentWindow.postMessage("paused", "*");
+    }
+  });
+</script>
+
+</body>
+</html>
